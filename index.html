@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<style>
+    .container {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .error {
+        color: red;
+        font-size: 14px;
+    }
+
+    .required::after {
+        content: " *";
+        color: red;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Registration Form</h2>
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="fullName" class="required">Full Name</label>
+            <input type="text" id="fullName" name="fullName">
+            <span class="error" id="fullNameError"></span>
+        </div>
+        <div class="form-group">
+            <label for="password" class="required">Password</label>
+            <input type="password" id="password" name="password">
+            <span class="error" id="passwordError"></span>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber" class="required">Phone Number</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber">
+            <span class="error" id="phoneNumberError"></span>
+        </div>
+        <div class="form-group">
+            <label for="email" class="required">Email Address</label>
+            <input type="email" id="email" name="email">
+            <span class="error" id="emailError"></span>
+        </div>
+        <div class="form-group">
+            <label for="country" class="required">Country</label>
+            <select id="country" name="country">
+                <option value="">Select Country</option>
+                <option value="Afghanistan">Afghanistan</option>
+                <option value="Armenia">Armenia</option>
+                <option value="Australia">Australia</option>
+                <option value="Austria">Austria</option>
+                <option value="Bahrain">Bahrain</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Canada">Canada</option>
+                <option value="Egypt">Egypt</option>
+                <option value="India">India</option>
+                <option value="Kuwait">Kuwait</option>
+                <option value="Qatar">Qatar</option>
+                <option value="SaudiArabia">Saudi Arabia</option>
+                <option value="SouthAfrica">South Africa</option>
+                <option value="UAE">UAE</option>
+                <option value="UK">UK</option>
+                <option value="USA">USA</option>
+                <option value="Yemen">Yemen</option>         
+            </select>
+            <span class="error" id="countryError"></span>
+        </div>
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" id="currency" name="currency" readonly>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+// JavaScript for Registration Form
+
+const currencyMap = {
+    'USA': 'USD',
+    'Canada': 'CAD',
+    'India': 'INR',
+    'Australia': 'AUD',
+    'UK': 'GBP',
+    'UAE': 'AED',
+    'Afghanistan': 'AFN',
+    'Armenia': 'AMD',
+    'Bahrain': 'BHD',
+    'Brazil': 'BRL',
+    'Egypt': 'EGP',
+    'Kuwait': 'KWD',
+    'Qatar': 'QAR',
+    'SaudiArabia': 'SAR',
+    'SouthAfrica': 'ZAR',
+    'Yemen': 'YER'
+};
+
+// Update currency when country is selected
+document.getElementById('country').addEventListener('change', function() {
+    const selectedCountry = this.value;
+    document.getElementById('currency').value = currencyMap[selectedCountry] || 'N/A';
+});
+
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    // Clear previous errors
+    document.getElementById('fullNameError').textContent = '';
+    document.getElementById('passwordError').textContent = '';
+    document.getElementById('phoneNumberError').textContent = '';
+    document.getElementById('emailError').textContent = '';
+    document.getElementById('countryError').textContent = '';
+
+    // Get input values
+    const fullName = document.getElementById('fullName').value.trim();
+    const password = document.getElementById('password').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const email = document.getElementById('email').value;
+    const country = document.getElementById('country').value;
+
+    let valid = true;
+
+    // Validate full name
+    if (fullName === '') {
+        document.getElementById('fullNameError').textContent = 'Full Name is required.';
+        valid = false;
+        document.getElementById('fullName').focus();
+    }
+
+    // Validate password
+    if (password.length < 6) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
+        valid = false;
+        if (valid) document.getElementById('password').focus();
+    }
+
+    // Validate phone number
+    if (phoneNumber === '') {
+        document.getElementById('phoneNumberError').textContent = 'Phone Number is required.';
+        valid = false;
+        if (valid) document.getElementById('phoneNumber').focus();
+    }
+
+    // Validate email
+    if (email === '') {
+        document.getElementById('emailError').textContent = 'Email Address is required.';
+        valid = false;
+        if (valid) document.getElementById('email').focus();
+    }
+
+    // Validate country selection
+    if (country === '') {
+        document.getElementById('countryError').textContent = 'Please select a country.';
+        valid = false;
+        if (valid) document.getElementById('country').focus();
+    }
+
+    if (valid) {
+        alert('Registration successful!');
+        // Here you can add further processing, like sending the data to a server.
+    }
+});
+</script>
+
+</body>
+</html>
